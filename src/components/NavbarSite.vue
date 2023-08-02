@@ -29,7 +29,9 @@
               <router-link class="nav-link" to="/keranjang">
                 Keranjang
                 <b-icon-bag></b-icon-bag>
-                <span class="badge bg-success ml-2 text-white">0</span>
+                <span class="badge badge-success">0</span>
+                
+                <!-- <span class="badge bg-success  ml-2">0</span> -->
               </router-link>
             </li>
           </ul>
