@@ -11,9 +11,9 @@
                   <strong>Delicious Food Menu, </strong> <br />in Your Gadget
                 </h2>
                 <p>Ayo segera pilih dan pesan makanan favorit Anda</p>
-                <button type="button" class="btn btn-success btn-lg">
+                <router-link type="button" class="btn btn-success btn-lg" to="/foods">
                   <b-icon-arrow-right></b-icon-arrow-right> Pesan
-                </button>
+                </router-link>
               </div>
             </div>
           </div>
@@ -36,9 +36,9 @@
                   <strong>Delicious Food Menu, </strong> <br />in Your Gadget
                 </h2>
                 <p>Ayo segera pilih dan pesan makanan favorit Anda</p>
-                <button type="button" class="btn btn-success btn-lg">
+                <router-link type="button" class="btn btn-success btn-lg" to="/foods">
                   <b-icon-arrow-right></b-icon-arrow-right> Pesan
-                </button>
+                </router-link>
               </div>
             </div>
           </div>
