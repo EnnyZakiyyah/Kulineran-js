@@ -25,7 +25,7 @@
 
       <div class="container">
         <div class="row mt-3">
-          <div class="col-md-7">
+          <div class="col-md-7 mb-3">
             <img
               :src="'../assets/images/' + product.gambar"
               class="img-fluid shadow"
@@ -40,19 +40,26 @@
             <h4>
               Harga: <strong>Rp{{ product.harga }}</strong>
             </h4>
-            <form class="mt-4">
+            <form class="mt-4" v-on:submit.prevent>
               <div class="form-group">
                 <label for="jumlah_pesan">Jumlah Pesan</label>
-                <input type="number" class="form-control" />
+                <input
+                  type="number"
+                  class="form-control"
+                  v-model="pesan.jumlah_pemesanan"
+                />
               </div>
               <div class="form-group">
                 <label for="keterangan">Keterangan</label>
                 <textarea
+                  v-model="pesan.keterangan"
                   class="form-control"
                   placeholder="Keterangan seperti: Pedas, Nasi Setengah, dll ..."
                 ></textarea>
               </div>
-              <button type="submit" class="btn btn-success"><b-icon-cart></b-icon-cart> Pesan</button>
+              <button type="submit" class="btn btn-success" @click="pemesanan">
+                <b-icon-cart></b-icon-cart> Pesan
+              </button>
             </form>
           </div>
         </div>
@@ -74,16 +81,47 @@ export default {
   data() {
     return {
       product: {},
+      pesan: {},
     };
   },
   methods: {
     setProduct(data) {
       this.product = data;
     },
+    pemesanan() {
+      if (this.pesan.jumlah_pemesanan) {
+        this.pesan.products = this.product;
+        axios
+          .post("http://localhost:3000/keranjangs", this.pesan)
+          .then(() => {
+            this.$router.push({ path: "/keranjang" })
+            this.$swal("Sukses Masuk Keranjang", {
+              // optional options Object
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 3000,
+              icon: "success",
+              title: "Hi from Sweetalert",
+              text: "Have a good day ahead!",
+              showCancelButton: "true",
+            });
+          })
+          .catch((err) => console.log(err));
+      } else {
+        this.$swal.fire({
+          // optional options Object
+          icon: "error",
+          title: "Oops...",
+          text: "Jumlah Pesanan Harus Diisi",
+        });
+      }
+    },
   },
 
   mounted() {
     // Make a request for a user with a given ID
+    // let instance = app.$toast.open('Basic Toast');
     axios
       .get("http://localhost:3000/products/" + this.$route.params.id)
       .then((response) => this.setProduct(response.data))
