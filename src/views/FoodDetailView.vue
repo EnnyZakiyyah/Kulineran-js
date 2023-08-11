@@ -3,7 +3,7 @@
     <NavbarSite />
     <div class="container">
       <!-- breadcrumb   -->
-      <div class="row mt-5">
+      <div class="row mt-4">
         <div class="col">
           <div class="container">
             <nav aria-label="breadcrumb">
@@ -22,6 +22,7 @@
           </div>
         </div>
       </div>
+      <!-- end breadcrumb -->
 
       <div class="container">
         <div class="row mt-3">
@@ -94,7 +95,7 @@ export default {
         axios
           .post("http://localhost:3000/keranjangs", this.pesan)
           .then(() => {
-            this.$router.push({ path: "/keranjang" })
+            this.$router.push({ path: "/keranjang" });
             this.$swal("Sukses Masuk Keranjang", {
               // optional options Object
               toast: true,
