@@ -1,6 +1,6 @@
 <template>
   <div class="cart">
-    <NavbarSite :updateKeranjang="keranjangs"/>
+    <NavbarSite :updateKeranjang="keranjangs" />
     <div class="container">
       <!-- breadcrumb   -->
       <div class="row mt-4">
@@ -89,6 +89,33 @@
             </div>
           </div>
         </div>
+
+        <!-- Form Checkout -->
+        <div class="container">
+          <div class="row justify-content-end">
+            <form class="mt-4" v-on:submit.prevent>
+              <div class="form-group">
+                <label for="nama">Nama : </label>
+                <input type="text" class="form-control" v-model="pesan.nama" />
+              </div>
+              <div class="form-group">
+                <label for="noMeja">Nomor Meja : </label>
+                <input
+                  type="text"
+                  class="form-control"
+                  v-model="pesan.noMeja"
+                />
+              </div>
+              <button
+                type="submit"
+                class="btn btn-success float-right"
+                @click="checkout"
+              >
+                <b-icon-cart></b-icon-cart> Pesan
+              </button>
+            </form>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -107,6 +134,7 @@ export default {
   data() {
     return {
       keranjangs: [],
+      pesan: {},
     };
   },
 
@@ -132,6 +160,44 @@ export default {
             .catch((error) => console.log("Gagal", error));
         })
         .catch((error) => console.log("Gagal", error));
+    },
+
+    checkout() {
+      if (this.pesan.nama && this.pesan.noMeja) {
+        this.pesan.keranjangs = this.keranjangs;
+
+        axios
+          .post("http://localhost:3000/pesanans", this.pesan)
+          .then(() => {
+            this.keranjangs.map(function (item) {
+              // Hapus semua keranjang
+              return axios
+                .delete("http://localhost:3000/keranjangs/" + item.id)
+                .catch((error) => console.log("Gagal", error));
+            });
+
+            this.$router.push({ path: "/pesanan-sukses" });
+            this.$swal("Sukses Dipesan", {
+              // optional options Object
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 3000,
+              icon: "success",
+              title: "Hi from Sweetalert",
+              text: "Have a good day ahead!",
+              showCancelButton: "true",
+            });
+          })
+          .catch((err) => console.log(err));
+      } else {
+        this.$swal.fire({
+          // optional options Object
+          icon: "error",
+          title: "Wajib Diisi",
+          text: "Nama dan Nomor Meja",
+        });
+      }
     },
   },
 
